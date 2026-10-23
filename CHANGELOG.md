@@ -1,0 +1,6 @@
+## 0.2.2 — 2026-10-23
+
+- Public release documentation and minimal VSIX packaging.
+- User-owned material now CC BY-NC-SA 4.0; third-party and earlier grants preserved.
+- Credential path is machine-scoped; disabled in untrusted workspaces.
+

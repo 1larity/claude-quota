@@ -1,0 +1,96 @@
+{
+  "name": "claude-quota",
+  "displayName": "Claude Quota",
+  "description": "Show Claude Code (claude.ai subscription) quota usage in the VS Code status bar.",
+  "version": "0.2.2",
+  "publisher": "stellaris-local",
+  "license": "CC-BY-NC-SA-4.0",
+  "private": true,
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeQuota.refresh",
+        "title": "Refresh",
+        "category": "Claude Quota"
+      },
+      {
+        "command": "claudeQuota.openUsagePage",
+        "title": "Open Usage Page",
+        "category": "Claude Quota"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Quota",
+      "properties": {
+        "claudeQuota.credentialsPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to Claude Code's credentials JSON. Defaults to `~/.claude/.credentials.json`. On macOS Claude Code stores credentials in the Keychain, which this extension cannot read.",
+          "scope": "machine"
+        },
+        "claudeQuota.refreshIntervalSeconds": {
+          "type": "number",
+          "default": 60,
+          "minimum": 15,
+          "description": "How often to refresh Claude quota data (seconds, minimum 15)."
+        },
+        "claudeQuota.thresholds": {
+          "type": "object",
+          "default": {
+            "redBelowPercent": 10,
+            "amberBelowPercent": 30
+          },
+          "additionalProperties": false,
+          "properties": {
+            "redBelowPercent": {
+              "type": "number",
+              "default": 10,
+              "minimum": 0,
+              "maximum": 100,
+              "markdownDescription": "Remaining percentage below which the status bar shows the red warning background. Checked first."
+            },
+            "amberBelowPercent": {
+              "type": "number",
+              "default": 30,
+              "minimum": 0,
+              "maximum": 100,
+              "markdownDescription": "Remaining percentage below which the status bar shows the amber warning background (and at or above which it shows green text)."
+            }
+          },
+          "markdownDescription": "Color-band thresholds in percent of quota _remaining_. Example: `{ \"redBelowPercent\": 5, \"amberBelowPercent\": 50 }`"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "smoke": "node test/smoke.js",
+    "vscode:prepublish": "npm test",
+    "package": "npx --yes @vscode/vsce@4.0.0 package --no-dependencies"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1larity/claude-quota.git"
+  },
+  "homepage": "https://evile.uk/redesign/projects/claude-quota/",
+  "bugs": {
+    "url": "https://github.com/1larity/claude-quota/issues"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Requires trusted local credentials or executable access."
+    },
+    "virtualWorkspaces": false
+  }
+}
