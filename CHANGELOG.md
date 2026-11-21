@@ -1,6 +1,6 @@
-## 0.3.2 - 2026-11-21
+## 0.3.3 - 2026-11-21
 
-- Published on the Visual Studio Marketplace as **Quota Monitor for Claude Code** (`RichardBeech.claude-quota`). The extension ID changed: uninstall an earlier VSIX build before installing this one.
+- Published on the Visual Studio Marketplace as **Quota Monitor for Claude Code** (`RichardBeech.quota-monitor-claude-code`). The extension ID changed: uninstall an earlier VSIX build before installing this one.
 - Square Marketplace icon.
 
 ## 0.3.0 - 2026-11-21

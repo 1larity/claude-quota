@@ -7,17 +7,17 @@ Show Claude Code (claude.ai subscription) quota usage in the VS Code status bar.
 ## Install
 
 Requires VS Code 1.74.0 or newer. Install **Quota Monitor for Claude Code** from the
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichardBeech.claude-quota): search for it in the Extensions view, or run
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichardBeech.quota-monitor-claude-code): search for it in the Extensions view, or run
 
 ```sh
-code --install-extension RichardBeech.claude-quota
+code --install-extension RichardBeech.quota-monitor-claude-code
 ```
 
-To install from a file instead, download **claude-quota-0.3.2.vsix** from the
+To install from a file instead, download **quota-monitor-claude-code-0.3.3.vsix** from the
 [EVILE project page](https://evile.uk/redesign/projects/claude-quota/) and choose
-**Extensions → … → Install from VSIX…**, or run `code --install-extension claude-quota-0.3.2.vsix`.
+**Extensions → … → Install from VSIX…**, or run `code --install-extension quota-monitor-claude-code-0.3.3.vsix`.
 
-If you installed a VSIX before version 0.3.2, uninstall it first: earlier builds
+If you installed a VSIX before version 0.3.3, uninstall it first: earlier builds
 used a different publisher ID, so VS Code treats them as a separate extension.
 
 ## How it works
