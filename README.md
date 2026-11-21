@@ -1,42 +1,24 @@
-<p align="center"><img src="assets/logo.png" alt="Claude Quota" width="640"></p>
+<p align="center"><img src="assets/logo.png" alt="Quota Monitor for Claude Code" width="640"></p>
 
-# Claude Quota
+# Quota Monitor for Claude Code
 
 Show Claude Code (claude.ai subscription) quota usage in the VS Code status bar.
 
 ## Install
 
-Requires VS Code 1.74.0 or newer. Download **claude-quota-0.3.0.vsix** from the
-[EVILE project page](https://evile.uk/redesign/projects/claude-quota/).
-
-1. Open **Extensions → … → Install from VSIX…**.
-2. Select the downloaded file.
-3. Run **Developer: Reload Window** if the extension has not appeared.
-
-Or install from a terminal:
+Requires VS Code 1.74.0 or newer. Install **Quota Monitor for Claude Code** from the
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=1larity.claude-quota): search for it in the Extensions view, or run
 
 ```sh
-code --install-extension claude-quota-0.3.0.vsix
+code --install-extension 1larity.claude-quota
 ```
 
-Show your Claude Code quota usage in the VS Code status bar: the same
-5-hour and weekly numbers Claude Code's `/usage` command shows, without
-leaving the editor.
+To install from a file instead, download **claude-quota-0.3.1.vsix** from the
+[EVILE project page](https://evile.uk/redesign/projects/claude-quota/) and choose
+**Extensions → … → Install from VSIX…**, or run `code --install-extension claude-quota-0.3.1.vsix`.
 
-```
-$(sparkle) Claude 5h 71% · W 83%
-```
-
-Reads the same usage endpoint Claude Code's `/usage` command uses
-(claude.ai Pro/Max subscriptions) and renders:
-
-- status bar text with both windows' remaining percentages
-- red / amber / green color bands (configurable thresholds)
-- a hover tooltip with used %, reset times, and rate-limit status
-- single click to refresh, double click to open claude.ai usage settings
-
-Companion extensions: [Codex Quota](https://github.com/1larity/codex-quota) and
-[GLM Quota](https://github.com/1larity/zai-quota).
+If you installed a VSIX before version 0.3.1, uninstall it first: earlier builds
+used a different publisher ID, so VS Code treats them as a separate extension.
 
 ## How it works
 
@@ -181,7 +163,7 @@ and no compilation step. Use Node.js 22+ for development.
 ```sh
 npm test
 node --check extension.js
-npx --yes @vscode/vsce@4.0.0 package --no-dependencies
+npx --yes @vscode/vsce@4.1.1 package --no-dependencies --githubBranch public
 ```
 
 Open the checkout in VS Code and press **F5** to launch an Extension Development

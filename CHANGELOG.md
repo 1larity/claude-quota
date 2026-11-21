@@ -1,3 +1,8 @@
+## 0.3.1 - 2026-11-21
+
+- Published on the Visual Studio Marketplace as **Quota Monitor for Claude Code** (`1larity.claude-quota`). The extension ID changed: uninstall an earlier VSIX build before installing this one.
+- Square Marketplace icon.
+
 ## 0.3.0 - 2026-11-21
 
 - `cli.js` prints the Claude Code quota as one JSON document for coding agents; `--all` adds every other installed quota extension.
