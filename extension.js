@@ -3,6 +3,7 @@
 const vscode = require('vscode');
 const api = require('./lib/api');
 const credentials = require('./lib/credentials');
+const path = require('path');
 const { createMonitor } = require('./lib/monitor');
 const quota = require('./lib/quota');
 
@@ -37,6 +38,17 @@ async function load() {
   return { parsed, summary: `windows=${parsed.windows.length}` };
 }
 
+// cli.js and the opt-in MCP server (mcp.js), registered by the monitor.
+function agentOptions(provider, env) {
+  return {
+    provider,
+    cliPath: path.join(__dirname, 'cli.js'),
+    mcpPath: path.join(__dirname, 'mcp.js'),
+    version: require('./package.json').version,
+    env,
+  };
+}
+
 function activate(context) {
   createMonitor(vscode, context, {
     section: 'claudeQuota',
@@ -52,6 +64,10 @@ function activate(context) {
     // 'expired' is deliberately absent: the last numbers stay up (marked
     // stale) until Claude Code renews the token.
     credentialReasons: ['not-found', 'malformed', 'unauthorized'],
+    agent: agentOptions('claude', async () => {
+      const credentialsPath = vscode.workspace.getConfiguration('claudeQuota').get('credentialsPath');
+      return credentialsPath ? { CLAUDE_CREDENTIALS_PATH: credentialsPath } : {};
+    }),
   });
 }
 

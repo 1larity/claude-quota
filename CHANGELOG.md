@@ -1,6 +1,10 @@
-## 0.2.2 — 2026-10-23
+## 0.3.0 - 2026-11-21
 
-- Public release documentation and minimal VSIX packaging.
+- `cli.js` prints the Claude Code quota as one JSON document for coding agents; `--all` adds every other installed quota extension.
+- Optional MCP server for coding agents, off by default: `mcp.js` with the tools `get_quota` and `get_all_quotas`. Toggle it from the link at the foot of the status bar tooltip, the **Claude Quota: Toggle MCP Server** command, or `claudeQuota.mcp.enabled`. While on, VS Code lists the server under its MCP servers.
+
+## 0.2.2 - 2026-10-23
+
 - User-owned material now CC BY-NC-SA 4.0; third-party and earlier grants preserved.
 - Credential path is machine-scoped; disabled in untrusted workspaces.
 
