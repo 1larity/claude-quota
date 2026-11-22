@@ -14,9 +14,8 @@ Show Claude Code (claude.ai subscription) quota usage in the VS Code status bar.
 
 ## Get started
 
-1. Install **Quota Monitor for Claude Code** from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichardBeech.quota-monitor-claude-code). VS Code 1.74 or newer is required.
-2. Install Claude Code and sign in with a claude.ai Pro or Max subscription by running `claude` in a terminal.
-3. Look for **Claude** in the VS Code status bar. Hover over it to see quota details and reset times. Use **Claude Quota: Refresh** in the Command Palette to update it now.
+1. Install Claude Code and sign in with a claude.ai Pro or Max subscription by running `claude` in a terminal.
+2. Look for **Claude** in the VS Code status bar. Hover over it to see quota details and reset times. Use **Claude Quota: Refresh** in the Command Palette to update it now.
 
 The extension reads Claude Code's existing credentials. On macOS Claude Code stores them in Keychain, which the extension cannot read; the extension supports Linux and Windows. Console API-key accounts do not have subscription usage windows.
 
