@@ -4,64 +4,33 @@
 
 Show Claude Code (claude.ai subscription) quota usage in the VS Code status bar.
 
-## Install
+## Features
 
-Requires VS Code 1.74.0 or newer. Install **Quota Monitor for Claude Code** from the
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichardBeech.quota-monitor-claude-code): search for it in the Extensions view, or run
+- See remaining quota in the VS Code status bar, with colour warnings when it runs low.
+- Hover for usage windows and reset times.
+- Refresh on demand or open the provider's usage page from the Command Palette.
+- Adjust the refresh interval and warning thresholds.
+- Optionally make quota information available to coding agents through MCP.
 
-```sh
-code --install-extension RichardBeech.quota-monitor-claude-code
-```
+## Get started
 
-To install from a file instead, download **quota-monitor-claude-code-0.3.3.vsix** from the
-[EVILE project page](https://evile.uk/redesign/projects/claude-quota/) and choose
-**Extensions → … → Install from VSIX…**, or run `code --install-extension quota-monitor-claude-code-0.3.3.vsix`.
+1. Install **Quota Monitor for Claude Code** from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichardBeech.quota-monitor-claude-code). VS Code 1.74 or newer is required.
+2. Install Claude Code and sign in with a claude.ai Pro or Max subscription by running `claude` in a terminal.
+3. Look for **Claude** in the VS Code status bar. Hover over it to see quota details and reset times. Use **Claude Quota: Refresh** in the Command Palette to update it now.
 
-If you installed a VSIX before version 0.3.3, uninstall it first: earlier builds
-used a different publisher ID, so VS Code treats them as a separate extension.
+The extension reads Claude Code's existing credentials. On macOS Claude Code stores them in Keychain, which the extension cannot read; the extension supports Linux and Windows. Console API-key accounts do not have subscription usage windows.
 
-## How it works
+Open the Command Palette with `Ctrl+Shift+P` on Windows/Linux or `Cmd+Shift+P` on macOS and search for **Claude Quota** to find the available commands.
 
-1. Reads the Claude Code OAuth credentials from
-   `~/.claude/.credentials.json` (`claudeAiOauth.accessToken`).
-2. Calls `GET https://api.anthropic.com/api/oauth/usage` with that token.
-3. Parses the JSON:
+## Commands
 
-   | Field | Meaning |
-   | --- | --- |
-   | `five_hour.utilization` | percent of the 5-hour window used (29 → 71% left) |
-   | `seven_day.utilization` | percent of the weekly window used |
-   | `seven_day_opus` / `seven_day_sonnet` | model-scoped weekly windows, when the plan has them (tooltip and color band only) |
-   | `*.resets_at` | ISO 8601 reset time |
-   | `extra_usage.is_enabled` | whether extra usage is turned on |
+- **Claude Quota: Refresh**
+- **Claude Quota: Open Usage Page**
+- **Claude Quota: Toggle MCP Server**
 
-   Contract verified live 2026-10 (plain `Bearer` token, no beta header).
+## Reading your quota
 
-**Cost:** none. The endpoint is read-only: no prompt is sent and no quota
-is consumed. Only the focused VS Code window polls; other windows catch up
-when they regain focus.
-
-## Token handling
-
-- The credentials file is strictly **read-only** to this extension. It
-  never refreshes tokens itself: refresh tokens are single-use, so doing so
-  would invalidate the copy a running `claude` process holds.
-- When the access token has expired, the last numbers stay up (marked
-  stale in the tooltip) until Claude Code renews the token the next time
-  you use it; the file is re-read on every poll.
-- If the token is rejected or the credentials are missing, the status bar
-  shows `$(key) Claude ?` with instructions to run `claude` to log in.
-- The token never appears in errors, logs, or diagnostics; the output
-  channel logs reasons and status strings only.
-- **macOS:** Claude Code stores credentials in the login Keychain, which
-  this extension cannot read, so it supports Linux and Windows.
-
-## Requirements
-
-- Claude Code logged in with a claude.ai subscription (Pro/Max). Console
-  API-key accounts have no subscription usage windows; the extension shows
-  a clear error in that case.
-- VS Code ^1.74.0. No dependencies, no build step.
+The status bar shows remaining percentages for available usage windows. Hover for more detail. By default, a red warning indicates less than 10% remaining, amber indicates less than 30%, and green indicates 30% or more. The most constrained window determines the colour. You can change the thresholds in Settings.
 
 ## Settings
 
@@ -72,17 +41,18 @@ when they regain focus.
 | `claudeQuota.thresholds` | `red < 10`, `amber < 30` | Percent-remaining color bands |
 | `claudeQuota.mcp.enabled` | `false` | Lets coding agents read this quota through the MCP server. Toggle it from the link at the foot of the status bar tooltip. |
 
-## Commands
 
-- `Claude Quota: Refresh`
-- `Claude Quota: Open Usage Page` (https://claude.ai/settings/usage)
-- `Claude Quota: Toggle MCP Server`: turn the MCP server for coding agents on or off; the link at the foot of the tooltip does the same
+## Troubleshooting
 
-## Privacy and workspace trust
+- If the status bar shows `Claude ?` with a key icon, run `claude` and sign in.
+- If the tooltip marks the last values as stale, use Claude Code to renew its access token; the extension reads the credentials again on its next refresh.
+- Check the **Claude Quota** output channel under **View > Output** for status messages.
 
-This extension is disabled in untrusted and virtual workspaces. Set `claudeQuota.credentialsPath` in **User settings**; project settings cannot choose a credentials file. The extension reads an existing OAuth access token and sends it only to Anthropic over HTTPS. It never renews tokens.
-No telemetry is sent by this extension. Review provider-specific credential
-handling above. Never include keys, tokens or account responses in bug reports.
+## Privacy and access
+
+The extension reads the Claude Code OAuth access token and sends it to Anthropic over HTTPS to retrieve usage. It does not renew the token. The extension sends no telemetry. Never include keys, tokens or account responses in bug reports.
+
+This extension is disabled in untrusted and virtual workspaces.
 
 ## Licence
 
@@ -154,24 +124,3 @@ args = ["<folder>/mcp.js"]
 ```
 
 Any one server reports all installed providers, so one entry per agent is enough. Give that entry `ZAI_API_KEY_COMMAND` (see the GLM Quota README) so GLM can answer through it too.
-
-## Developer guide
-
-The extension is plain CommonJS JavaScript with **no runtime npm dependencies**
-and no compilation step. Use Node.js 22+ for development.
-
-```sh
-npm test
-node --check extension.js
-npx --yes @vscode/vsce@4.1.1 package --no-dependencies --githubBranch public
-```
-
-Open the checkout in VS Code and press **F5** to launch an Extension Development
-Host. Run `npm test` for the offline test suite.
-
-- `extension.js`: VS Code integration.
-- `lib/`: provider clients, parsers and monitor lifecycle.
-- `test/`: offline regression coverage.
-- `.vscodeignore`: files included in the extension package.
-
-See [SECURITY.md](SECURITY.md) for sensitive reporting guidance.
