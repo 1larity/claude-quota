@@ -1,3 +1,7 @@
+## 0.3.4 - 2026-11-22
+
+- Updated the user guide and feature list.
+
 ## 0.3.3 - 2026-11-21
 
 - Published on the Visual Studio Marketplace as **Quota Monitor for Claude Code** (`RichardBeech.quota-monitor-claude-code`). The extension ID changed: uninstall an earlier VSIX build before installing this one.
